@@ -393,7 +393,15 @@ module_ssh_hardening() {
         "Common misconception: fail2ban is NOT needed with proper SSH hardening."
     
     local ssh_config="/etc/ssh/sshd_config"
-    
+
+    read -p "Do you want to proceed? (Y/n): " yn
+    case $yn in
+        [Yy]* ) echo "Proceeding..."; break;;
+        [Nn]* ) echo "Exiting."; exit;;
+        * ) echo "Invalid input. Please answer yes or no.";;
+    esac
+
+
     # Check if SSH is even installed/needed
     if ! command -v sshd &>/dev/null; then
         if [[ "${IS_DESKTOP}" == "true" ]]; then
@@ -848,7 +856,7 @@ net.ipv4.conf.all.log_martians = 1
 net.ipv4.conf.default.log_martians = 1
 
 # Disable IP forwarding (not a router)
-net.ipv4.ip_forward = 0
+# net.ipv4.ip_forward = 0 # This command breaks communicated with web services
 net.ipv6.conf.all.forwarding = 0
 
 # Memory protection
